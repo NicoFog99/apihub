@@ -1,6 +1,6 @@
 # API Hub
 
-Directorio interactivo de APIs públicas desarrollado como proyecto final de **2DAW Semipresencial**.
+Directorio interactivo de APIs públicas desarrollado como proyecto final.
 
 Permite explorar, buscar, filtrar y probar APIs reales directamente en el navegador, con sistema de usuarios, favoritos y valoraciones.
 
