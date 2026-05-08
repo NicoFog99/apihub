@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Mi Perfil — API Hub{% endblock %}
+{% block content %}
+  <div id="info-usuario"></div>
+
+  <div class="perfil-tabs">
+    <button class="perfil-tab activa" onclick="cambiarTab('favoritos')">⭐ Favoritos</button>
+    <button class="perfil-tab" onclick="cambiarTab('historial')">🕐 Historial</button>
+    <button class="perfil-tab" onclick="cambiarTab('ajustes')">⚙️ Ajustes</button>
+  </div>
+
+  <div id="tab-favoritos" class="perfil-section">
+    <div id="lista-favoritos" class="grid-apis"></div>
+  </div>
+
+  <div id="tab-historial" class="perfil-section" style="display:none">
+    <div class="historial-header">
+      <h2>Historial de peticiones</h2>
+      <button class="btn-limpiar-historial" onclick="limpiarHistorial()">🗑️ Limpiar</button>
+    </div>
+    <div id="historial-lista"></div>
+  </div>
+
+  <div id="tab-ajustes" class="perfil-section" style="display:none">
+    <div class="ajustes-grid">
+
+      <div class="ajuste-card">
+        <h3>Cambiar nombre de usuario</h3>
+        <div class="input-group">
+          <input type="text" id="nuevo-username" placeholder="Nuevo nombre de usuario">
+        </div>
+        <button class="btn-ajuste" onclick="cambiarUsername()">Guardar</button>
+        <p class="ajuste-msg" id="msg-username"></p>
+      </div>
+
+      <div class="ajuste-card">
+        <h3>Cambiar email</h3>
+        <div class="input-group">
+          <input type="email" id="nuevo-email" placeholder="Nuevo email">
+        </div>
+        <button class="btn-ajuste" onclick="cambiarEmail()">Guardar</button>
+        <p class="ajuste-msg" id="msg-email"></p>
+      </div>
+
+      <div class="ajuste-card">
+        <h3>Cambiar contraseña</h3>
+        <div class="input-group">
+          <input type="password" id="password-actual" placeholder="Contraseña actual">
+        </div>
+        <div class="input-group">
+          <input type="password" id="password-nuevo" placeholder="Nueva contraseña">
+        </div>
+        <button class="btn-ajuste" onclick="cambiarPassword()">Guardar</button>
+        <p class="ajuste-msg" id="msg-password"></p>
+      </div>
+
+      <div class="ajuste-card ajuste-peligro">
+        <h3>Eliminar cuenta</h3>
+        <p class="ajuste-aviso">Esta acción es irreversible. Se borrarán todos tus datos.</p>
+        <div class="input-group">
+          <input type="password" id="password-eliminar" placeholder="Confirma tu contraseña">
+        </div>
+        <button class="btn-ajuste btn-eliminar" onclick="eliminarCuenta()">Eliminar cuenta</button>
+        <p class="ajuste-msg" id="msg-eliminar"></p>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/perfil.js' %}?v=3"></script>{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Verificación — API Hub{% endblock %}
+{% block content %}
+  <div style="max-width:500px;margin:4rem auto;text-align:center">
+    <div style="background:var(--surface);border-radius:20px;padding:3rem;box-shadow:var(--shadow)">
+      {% if exito %}
+        <div style="font-size:4rem;margin-bottom:1rem">✅</div>
+        <h2 style="color:var(--text);margin-bottom:1rem">¡Cuenta verificada!</h2>
+        <p style="color:var(--muted);margin-bottom:2rem">{{ mensaje }}</p>
+        <a href="/" style="background:var(--blue);color:#fff;padding:.8rem 2rem;border-radius:10px;font-weight:600">
+          Ir al catálogo
+        </a>
+      {% else %}
+        <div style="font-size:4rem;margin-bottom:1rem">❌</div>
+        <h2 style="color:var(--text);margin-bottom:1rem">Enlace inválido</h2>
+        <p style="color:var(--muted)">{{ mensaje }}</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

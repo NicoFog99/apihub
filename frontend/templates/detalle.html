@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Detalle API — API Hub{% endblock %}
+{% block content %}
+  <div class="detalle-layout">
+    <div id="api-info"></div>
+    <section class="valoracion-seccion">
+  <h2>Valoración</h2>
+  <div id="valoracion-media" class="valoracion-media"></div>
+  <div id="estrellas" class="estrellas"></div>
+  <p id="valoracion-msg" class="valoracion-msg"></p>
+</section>
+    <section id="seccion-visual" style="display:none">
+      <h2 id="visual-titulo"></h2>
+      <div id="resultado-visual"></div>
+    </section>
+    <section class="tester">
+      <h2>Tester interactivo</h2>
+      <div id="params-container"></div>
+      <button id="btn-enviar">&#9654; Enviar petición</button>
+      <div id="pre-wrapper" style="position:relative;display:none">
+        <button id="btn-copiar" onclick="copiarJSON()" title="Copiar JSON">
+          Copiar
+        </button>
+        <pre id="respuesta"></pre>
+      </div>
+    </section>
+  </div>
+  
+{% endblock %}
+{% block scripts %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'js/detalle.js' %}?v=2"></script>
+{% endblock %}

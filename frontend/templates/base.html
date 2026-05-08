@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="API Hub — Directorio interactivo de APIs públicas. Explora, prueba y gestiona APIs reales directamente en el navegador.">
+  <meta name="author" content="Nicoló Foglino">
+  <meta property="og:title" content="API Hub">
+  <meta property="og:description" content="Directorio interactivo de APIs públicas. Explora, prueba y gestiona APIs reales directamente en el navegador.">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <title>{% block title %}API Hub{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="/" class="logo">
+        <span class="logo-dot"></span>
+        API Hub
+      </a>
+      <a href="/" class="nav-cat">Catálogo</a>
+      <a href="/stats/" class="nav-cat">Estadísticas</a>
+    </div>
+    <div class="nav-links">
+      <button id="btn-tema" onclick="toggleTema()" title="Cambiar tema">🌙</button>
+      <span id="nav-user"></span>
+    </div>
+  </nav>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <p>API Hub — Proyecto DAW 2026 · Nicoló Foglino &nbsp;|&nbsp;
+      <a href="https://github.com/" target="_blank">GitHub</a>
+    </p>
+  </footer>
+  <div id="toast-container"></div>
+  <script src="{% static 'js/auth.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

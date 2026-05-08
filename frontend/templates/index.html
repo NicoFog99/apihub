@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Catálogo — API Hub{% endblock %}
+{% block content %}
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Directorio de APIs Públicas</h1>
+      <p>Explora, aprende y prueba APIs reales directamente en el navegador</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong id="stat-apis">—</strong><span>APIs</span></div>
+        <div class="hero-stat"><strong id="stat-cats">—</strong><span>Categorías</span></div>
+        <div class="hero-stat"><strong>100%</strong><span>Gratuitas</span></div>
+      </div>
+    </div>
+  </div>
+<div class="filtros">
+  <input type="text" id="buscador" placeholder="Buscar API...">
+  <select id="filtro-categoria"><option value="">Todas las categorías</option></select>
+  <select id="filtro-auth">
+    <option value="">Cualquier autenticación</option>
+    <option value="none">🔓 Libre</option>
+    <option value="apikey">🔑 API Key</option>
+    <option value="oauth">🔐 OAuth</option>
+  </select>
+  <select id="filtro-orden">
+    <option value="">Ordenar por...</option>
+    <option value="nombre">Nombre (A-Z)</option>
+    <option value="-nombre">Nombre (Z-A)</option>
+    <option value="creada_en">Más antiguas</option>
+    <option value="-creada_en">Más recientes</option>
+    <option value="-rating">Mayor rating</option>
+  </select>
+  <label class="filtro-check">
+  <input type="checkbox" id="filtro-implementada">
+  ✓ Solo implementadas
+  </label>
+</div>
+  <div class="catalogo-header">
+  <p class="contador-apis" id="contador"></p>
+  <div class="vista-toggle">
+    <button class="btn-vista activo" id="btn-grid" onclick="cambiarVista('grid')" title="Vista cuadrícula">⊞</button>
+    <button class="btn-vista" id="btn-list" onclick="cambiarVista('list')" title="Vista lista">☰</button>
+  </div>
+</div>
+  <div id="lista-apis" class="grid-apis"></div>
+  <div id="paginacion" class="paginacion-wrapper"></div>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/index.js' %}"></script>{% endblock %}
