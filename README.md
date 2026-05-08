@@ -105,4 +105,3 @@ apihub/
 ## Autor
 
 **Nicoló Foglino** — 2DAW Semipresencial  
-Profesor: Óliver Díaz Rodríguez
