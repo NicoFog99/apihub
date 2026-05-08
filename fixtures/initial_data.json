@@ -1,0 +1,392 @@
+[
+{
+  "model": "apis.categoria",
+  "pk": 1,
+  "fields": {
+    "nombre": "Entretenimiento",
+    "icono": "🎬"
+  }
+},
+{
+  "model": "apis.categoria",
+  "pk": 2,
+  "fields": {
+    "nombre": "Meteorología",
+    "icono": "🌤️"
+  }
+},
+{
+  "model": "apis.categoria",
+  "pk": 3,
+  "fields": {
+    "nombre": "Geografía",
+    "icono": "🌍"
+  }
+},
+{
+  "model": "apis.categoria",
+  "pk": 4,
+  "fields": {
+    "nombre": "Ciencia y Espacio",
+    "icono": "🚀"
+  }
+},
+{
+  "model": "apis.categoria",
+  "pk": 5,
+  "fields": {
+    "nombre": "Gastronomía",
+    "icono": "🍽️"
+  }
+},
+{
+  "model": "apis.categoria",
+  "pk": 6,
+  "fields": {
+    "nombre": "Criptomonedas",
+    "icono": "💰"
+  }
+},
+{
+  "model": "apis.categoria",
+  "pk": 7,
+  "fields": {
+    "nombre": "prueba",
+    "icono": "👀"
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 4,
+  "fields": {
+    "nombre": "Bored API",
+    "descripcion": "Genera sugerencias de actividades aleatorias para cuando no sabes qué hacer. Puedes filtrar por tipo de actividad, número de participantes o coste.",
+    "url_base": "https://bored-api.appbrewery.com",
+    "auth_tipo": "none",
+    "categoria": 1,
+    "documentacion_url": "",
+    "ejemplo_endpoint": "/random",
+    "parametros_ejemplo": {},
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:17:09.799Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 6,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 15,
+  "fields": {
+    "nombre": "CoinGecko",
+    "descripcion": "Una de las APIs de criptomonedas más completas. Permite consultar precios en tiempo real, capitalización de mercado, volumen y datos históricos de miles de criptomonedas.",
+    "url_base": "https://api.coingecko.com/api/v3",
+    "auth_tipo": "none",
+    "categoria": 6,
+    "documentacion_url": "https://docs.coingecko.com/",
+    "ejemplo_endpoint": "/simple/price",
+    "parametros_ejemplo": {
+      "ids": "bitcoin,ethereum",
+      "vs_currencies": "eur"
+    },
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:30:30.163Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 1,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 8,
+  "fields": {
+    "nombre": "CountriesNow",
+    "descripcion": "API que permite consultar ciudades, estados, códigos de marcado telefónico, banderas y datos demográficos organizados por país.",
+    "url_base": "https://countriesnow.space/api/v0.1",
+    "auth_tipo": "none",
+    "categoria": 3,
+    "documentacion_url": "https://countriesnow.space/swagger-docs/",
+    "ejemplo_endpoint": "/countries",
+    "parametros_ejemplo": {},
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:22:15.441Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 16,
+  "fields": {
+    "nombre": "Crypto compare",
+    "descripcion": "API de mercado de criptomonedas en tiempo real. Ofrece precios actualizados al segundo, rankings por capitalización y datos de intercambios de todo el mundo.",
+    "url_base": "https://min-api.cryptocompare.com/data",
+    "auth_tipo": "none",
+    "categoria": 6,
+    "documentacion_url": "https://www.cryptocompare.com/coins/guides/how-to-use-our-api/",
+    "ejemplo_endpoint": "/pricemulti",
+    "parametros_ejemplo": {
+      "fsyms": "BTC,ETH",
+      "tsyms": "EUR,USD"
+    },
+    "render_tipo": "crypto",
+    "activa": true,
+    "creada_en": "2026-05-02T21:31:06.488Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 14,
+  "fields": {
+    "nombre": "Fruityvice",
+    "descripcion": "API de información nutricional sobre frutas. Devuelve datos como calorías, proteínas, carbohidratos, grasas y azúcares de cada fruta consultada.",
+    "url_base": "https://www.fruityvice.com/api",
+    "auth_tipo": "none",
+    "categoria": 5,
+    "documentacion_url": "https://www.fruityvice.com/doc/index.html",
+    "ejemplo_endpoint": "/fruit/apple",
+    "parametros_ejemplo": {},
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:29:46.709Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 9,
+  "fields": {
+    "nombre": "IP-API",
+    "descripcion": "Geolocalización de direcciones IP. Devuelve el país, ciudad, región, proveedor de internet y coordenadas geográficas asociadas a una IP concreta.",
+    "url_base": "http://ip-api.com",
+    "auth_tipo": "none",
+    "categoria": 3,
+    "documentacion_url": "https://ip-api.com/docs/",
+    "ejemplo_endpoint": "/json/8.8.8.8",
+    "parametros_ejemplo": {},
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:24:04.874Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 3,
+  "fields": {
+    "nombre": "JokeAPI",
+    "descripcion": "API de chistes y humor en varios idiomas. Permite filtrar por categoría, idioma y tipo de chiste, con opción de modo seguro para evitar contenido inapropiado.",
+    "url_base": "https://v2.jokeapi.dev",
+    "auth_tipo": "none",
+    "categoria": 1,
+    "documentacion_url": "",
+    "ejemplo_endpoint": "/joke/Any",
+    "parametros_ejemplo": {},
+    "render_tipo": "joke",
+    "activa": true,
+    "creada_en": "2026-05-02T21:16:19.162Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 19,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 10,
+  "fields": {
+    "nombre": "NASA APOD",
+    "descripcion": "Astronomy Picture of the Day. La NASA publica cada día una imagen o fotografía del espacio con una explicación redactada por astrónomos profesionales.",
+    "url_base": "https://api.nasa.gov/planetary",
+    "auth_tipo": "apikey",
+    "categoria": 4,
+    "documentacion_url": "https://github.com/nasa/apod-api",
+    "ejemplo_endpoint": "/apod",
+    "parametros_ejemplo": {
+      "api_key": "DEMO_KEY"
+    },
+    "render_tipo": "apod",
+    "activa": true,
+    "creada_en": "2026-05-02T21:26:02.499Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 2,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 11,
+  "fields": {
+    "nombre": "NASA Mars Rover",
+    "descripcion": "Accede a las fotografías tomadas por los rovers de la NASA en Marte. Permite filtrar por rover, fecha marciana (sol) y cámara específica.",
+    "url_base": "https://api.nasa.gov/mars-photos/api/v1",
+    "auth_tipo": "apikey",
+    "categoria": 4,
+    "documentacion_url": "",
+    "ejemplo_endpoint": "/rovers/curiosity/photos",
+    "parametros_ejemplo": {
+      "sol": "1000",
+      "api_key": "DEMO_KEY"
+    },
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:27:18.330Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 12,
+  "fields": {
+    "nombre": "Open Notify — ISS",
+    "descripcion": "Devuelve la posición geográfica actual de la Estación Espacial Internacional en tiempo real, con latitud y longitud actualizadas cada pocos segundos.",
+    "url_base": "http://api.open-notify.org",
+    "auth_tipo": "none",
+    "categoria": 4,
+    "documentacion_url": "http://open-notify.org/Open-Notify-API/",
+    "ejemplo_endpoint": "/iss-now.json",
+    "parametros_ejemplo": {},
+    "render_tipo": "iss",
+    "activa": true,
+    "creada_en": "2026-05-02T21:28:12.830Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 5,
+  "fields": {
+    "nombre": "Open-Meteo",
+    "descripcion": "API meteorológica gratuita y sin registro que proporciona previsiones del tiempo en tiempo real para cualquier punto del planeta usando coordenadas geográficas.",
+    "url_base": "https://api.open-meteo.com/v1",
+    "auth_tipo": "none",
+    "categoria": 2,
+    "documentacion_url": "",
+    "ejemplo_endpoint": "/forecast",
+    "parametros_ejemplo": {
+      "latitude": "28.4556",
+      "longitude": "-16.2825",
+      "current_weather": "true"
+    },
+    "render_tipo": "weather",
+    "activa": true,
+    "creada_en": "2026-05-02T21:18:12.460Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 6,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 1,
+  "fields": {
+    "nombre": "PokeAPI",
+    "descripcion": "Base de datos completa de Pokémon con stats, tipos, evoluciones y más.",
+    "url_base": "https://pokeapi.co/api/v2",
+    "auth_tipo": "none",
+    "categoria": 1,
+    "documentacion_url": "https://pokeapi.co/docs/v2",
+    "ejemplo_endpoint": "/pokemon/{pokemon}",
+    "parametros_ejemplo": {
+      "pokemon": "ditto"
+    },
+    "render_tipo": "pokemon",
+    "activa": true,
+    "creada_en": "2026-05-02T21:05:19.190Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 6,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 7,
+  "fields": {
+    "nombre": "RestCountries",
+    "descripcion": "Proporciona información detallada sobre todos los países del mundo: población, idiomas, moneda, bandera, capital, zona horaria y mucho más.",
+    "url_base": "https://restcountries.com/v3.1",
+    "auth_tipo": "none",
+    "categoria": 3,
+    "documentacion_url": "https://gitlab.com/restcountries/restcountries/-/blob/master/README.md",
+    "ejemplo_endpoint": "/name/spain",
+    "parametros_ejemplo": {},
+    "render_tipo": "country",
+    "activa": true,
+    "creada_en": "2026-05-02T21:21:00.421Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": false
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 2,
+  "fields": {
+    "nombre": "TheMealDB",
+    "descripcion": "Base de datos de recetas de cocina de todo el mundo. Permite buscar platos por nombre, ingrediente o categoría y obtener instrucciones detalladas de preparación",
+    "url_base": "https://www.themealdb.com/api/json/v1/1",
+    "auth_tipo": "none",
+    "categoria": 5,
+    "documentacion_url": "",
+    "ejemplo_endpoint": "/random.php",
+    "parametros_ejemplo": {},
+    "render_tipo": "meal",
+    "activa": true,
+    "creada_en": "2026-05-02T21:15:39.275Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 0,
+    "implementada": true
+  }
+},
+{
+  "model": "apis.api",
+  "pk": 6,
+  "fields": {
+    "nombre": "wttr.in",
+    "descripcion": "Servicio de consulta del tiempo que devuelve datos meteorológicos actuales de cualquier ciudad del mundo en formato JSON, ideal para integraciones rápidas.",
+    "url_base": "https://wttr.in",
+    "auth_tipo": "none",
+    "categoria": 2,
+    "documentacion_url": "https://wttr.in/:help",
+    "ejemplo_endpoint": "/Madrid",
+    "parametros_ejemplo": {
+      "format": "j1"
+    },
+    "render_tipo": "json",
+    "activa": true,
+    "creada_en": "2026-05-02T21:19:43.669Z",
+    "puntuacion_promedio": 0.0,
+    "total_puntuaciones": 0,
+    "total_visitas": 1,
+    "implementada": false
+  }
+}
+]
