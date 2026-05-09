@@ -20,7 +20,7 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
 
 ## Funcionalidades principales
 
-- Catálogo de 16 APIs con búsqueda, filtros avanzados y paginación
+- Catálogo de 15 APIs con búsqueda, filtros avanzados y paginación
 - Tester interactivo para probar cada API desde el navegador
 - Renders visuales personalizados (Pokémon, ISS, Crypto, APOD, clima, recetas, países, chistes)
 - Sistema de valoraciones con media global por API
