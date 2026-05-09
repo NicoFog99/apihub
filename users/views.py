@@ -134,7 +134,7 @@ def cambiar_password(request):
     password_nuevo  = request.data.get('password_nuevo')
     if not request.user.check_password(password_actual):
         return Response({'error': 'La contraseña actual no es correcta.'}, status=400)
-    if len(password_nuevo) < 8:
+    if len(password_nuevo) < 6:
         return Response({'error': 'La nueva contraseña debe tener al menos 8 caracteres.'}, status=400)
     request.user.set_password(password_nuevo)
     request.user.save()
