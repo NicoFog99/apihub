@@ -388,5 +388,23 @@
     "total_visitas": 1,
     "implementada": false
   }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$VtEfBv1mBZxcqOEtIGHjSF$Naa0LLF9VKC//JDO44ulmzo7RFsc8dFvJSYXccHr/Ks=",
+    "last_login": "2026-05-07T09:46:25.601Z",
+    "is_superuser": true,
+    "username": "nicolo",
+    "first_name": "",
+    "last_name": "",
+    "email": "mail1@mail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-05T17:18:23.430Z",
+    "groups": [],
+    "user_permissions": []
+  }
 }
 ]
