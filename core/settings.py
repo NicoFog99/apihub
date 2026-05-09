@@ -113,3 +113,7 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True
 # Email — en desarrollo sale por terminal
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+
+# Fuerza HTTPS en las URLs generadas por DRF (paginación, etc.)
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
