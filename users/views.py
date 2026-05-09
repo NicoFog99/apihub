@@ -23,10 +23,12 @@ def register(request):
 
         # Enlace de verificación
 # Enlace de verificación
+        # Enlace de verificación
         token = str(perfil.token_verificacion)
-        enlace = f"http://localhost:8000/verificar/{token}/"
+        #Arreglo para railway, variable anterior: enlace = f"http://localhost:8000/verificar/{token}/"
+        enlace = f"{request.scheme}://{request.get_host()}/verificar/{token}/"
 
-        # Enviar email (sale por terminal en desarrollo)
+        # Enviar email (sale por terminal en desarrollo), futura solucion con SendGrid o similar
         send_mail(
             subject='Verifica tu cuenta en API Hub',
             message=f'Hola {user.username}! Verifica tu cuenta aqui: {enlace}',
