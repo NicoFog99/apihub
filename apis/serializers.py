@@ -1,3 +1,5 @@
+# serializers.py
+
 from rest_framework import serializers
 from django.db.models import Avg
 from .models import Api, Categoria
@@ -6,7 +8,7 @@ class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Categoria
         fields = '__all__'
-
+# Serializer para la API, incluyendo campos relacionados de categoría y cálculos de valoración
 class ApiSerializer(serializers.ModelSerializer):
     categoria_nombre   = serializers.CharField(source='categoria.nombre', read_only=True)
     categoria_icono    = serializers.CharField(source='categoria.icono',  read_only=True)

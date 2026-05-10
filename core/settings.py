@@ -1,3 +1,5 @@
+# settings.py
+
 from pathlib import Path
 from decouple import config
 import os
@@ -5,14 +7,18 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Configuración de archivos estáticos para producción con WhiteNoise
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Configuración de seguridad y entorno
 SECRET_KEY = config('SECRET_KEY')
 
+# En producción, DEBUG debe ser False y ALLOWED_HOSTS debe contener los dominios permitidos
 DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
+# Aplicaciones instaladas, middleware, configuración de base de datos, autenticación, internacionalización, etc. se definen a continuación
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,7 +34,7 @@ INSTALLED_APPS = [
     'apis',
     'users',
 ]
-
+# Middleware, incluyendo CORS para permitir peticiones del frontend al backend
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -42,7 +48,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
-
+# Configuración de plantillas, apuntando a la carpeta de templates del frontend
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -59,17 +65,19 @@ TEMPLATES = [
     },
 ]
 
-
+# Configuración de WSGI para despliegue
 WSGI_APPLICATION = 'core.wsgi.application'
 
 import dj_database_url
 
+# Configuración de base de datos, usando dj_database_url para facilitar la configuración en diferentes entornos (desarrollo con SQLite y producción con PostgreSQL)
 DATABASES = {
     'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}'
     )
 }
 
+# Validadores de contraseña para mejorar la seguridad de las cuentas de usuario
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},

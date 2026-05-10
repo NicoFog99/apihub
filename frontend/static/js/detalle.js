@@ -1,6 +1,9 @@
+//detalle.js
+
 const apiId = location.pathname.split('/').filter(Boolean)[1];
 let mapInstance = null;
 
+// Mapeo de categorías a clases de badge para estilos personalizados
 const BADGE_CLASES = {
   'entretenimiento':   'badge-entretenimiento',
   'meteorologia':      'badge-meteorologia',
@@ -12,17 +15,19 @@ const BADGE_CLASES = {
   'gastronomía':       'badge-gastronomia',
   'criptomonedas':     'badge-criptomonedas',
 };
-
+// Función para obtener la clase de badge basada en el nombre de la categoría, con un fallback a 'badge-default' si no se encuentra una coincidencia
 function badgeClass(nombre) {
   return BADGE_CLASES[(nombre || '').toLowerCase().trim()] || 'badge-default';
 }
 
+// ── Cargar información de la API ─────────────────────────────────
 async function cargarApi() {
   const res = await fetch(`/api/apis/${apiId}/`);
   const api = await res.json();
 
   document.title = `${api.nombre} — API Hub`;
 
+  // Renderizar información principal de la API
   document.getElementById('api-info').innerHTML = `
     <div class="api-visitas-badge">👁 ${api.total_visitas || 0} visitas</div>
     <span class="badge ${badgeClass(api.categoria_nombre)}">${api.categoria_icono || ''} ${api.categoria_nombre}</span>
@@ -43,14 +48,17 @@ async function cargarApi() {
       <button id="btn-favorito" onclick="toggleFavorito()">⭐ Guardar en favoritos</button>
     </div>
   `;
-
+  
+  // Renderizar formulario de parámetros
   const params    = api.parametros_ejemplo || {};
   const container = document.getElementById('params-container');
   container.dataset.endpoint   = api.ejemplo_endpoint || '';
   container.dataset.urlBase    = api.url_base;
   container.dataset.params     = JSON.stringify(Object.keys(params));
   container.dataset.renderTipo = api.render_tipo || 'json';
-
+  
+  /* Si no hay parámetros, mostrar un mensaje indicando que no se requieren parámetros. 
+   De lo contrario, generar los campos de entrada para cada parámetro.*/
   if (Object.keys(params).length === 0) {
     container.innerHTML = '<p style="color:var(--muted);font-size:.88rem;margin-bottom:.5rem">Esta API no requiere parámetros.</p>';
   } else {
@@ -189,6 +197,7 @@ function renderVisual(tipo, data) {
     </div>`;
   break;
 }
+// Renderizado específico para JokeAPI, mostrando la broma de forma atractiva y diferenciando entre chistes de una sola parte y de dos partes
 case 'joke': {
   titulo.textContent = ' Vista previa';
   const esTwopart = data.type === 'twopart';
@@ -205,7 +214,7 @@ case 'joke': {
           <button class="btn-reveal" onclick="
             this.style.display='none';
             this.nextElementSibling.style.display='block';
-          ">🎭 Ver remate</button>
+          "> Ver remate</button>
           <div class="joke-delivery" style="display:none">${data.delivery}</div>
         </div>
       ` : `
@@ -214,6 +223,7 @@ case 'joke': {
     </div>`;
   break;
 }
+    // Renderizado específico para Pokémon, mostrando su imagen, tipos, estadísticas y datos relevantes de forma visualmente atractiva
     case 'pokemon': {
       titulo.textContent = ' Vista previa';
       const sprite = data.sprites?.other?.['official-artwork']?.front_default
@@ -255,12 +265,14 @@ case 'joke': {
       break;
     }
 
+    // Renderizado específico para la posición de la ISS, mostrando su ubicación en un mapa interactivo utilizando Leaflet y proporcionando información relevante como latitud, longitud y hora de actualización
     case 'iss': {
       titulo.textContent = ' Posición en tiempo real';
       const lat = parseFloat(data.iss_position?.latitude);
       const lon = parseFloat(data.iss_position?.longitude);
       const ts  = new Date(data.timestamp * 1000).toLocaleTimeString('es-ES');
 
+      // Si no se pueden obtener las coordenadas, mostrar un mensaje de error
       el.innerHTML = `
         <div class="visual-card">
           <p style="margin-bottom:.8rem;color:var(--muted);font-size:.9rem">
@@ -270,15 +282,19 @@ case 'joke': {
           </p>
           <div id="mapa-iss" style="height:420px;border-radius:12px;z-index:0"></div>
         </div>`;
-
+      
+      // Si ya existe una instancia del mapa, eliminarla antes de crear una nueva para evitar conflictos
       if (mapInstance) { mapInstance.remove(); mapInstance = null; }
 
+      // Crear el mapa de Leaflet después de un pequeño retraso para asegurar que el contenedor esté renderizado y evitar problemas de inicialización
       setTimeout(() => {
         mapInstance = L.map('mapa-iss').setView([lat, lon], 3);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© OpenStreetMap'
         }).addTo(mapInstance);
 
+        // Crear un icono personalizado para la ISS utilizando un emoji de nave espacial 
+        // y agregarlo al mapa en la posición actual de la ISS, con un popup que muestra información relevante
         const issIcon = L.divIcon({
           html: '<div style="font-size:2rem;line-height:1">🛸</div>',
           iconSize: [40, 40], iconAnchor: [20, 20], className: ''
@@ -290,6 +306,8 @@ case 'joke': {
       }, 100);
       break;
     }
+    // Renderizado específico para MealDB, mostrando una imagen del plato, 
+    // ingredientes, instrucciones y enlaces relevantes de forma visualmente atractiva
     case 'meal': {
   titulo.textContent = ' Vista previa';
   const meal = data.meals?.[0];
@@ -303,6 +321,7 @@ case 'joke': {
     if (ing && ing.trim()) ingredientes.push(`${med ? med.trim() + ' ' : ''}${ing.trim()}`);
   }
 
+  // Renderizar la información de la receta de forma visualmente atractiva, con una imagen del plato, una lista de ingredientes y las instrucciones de preparación. También se incluye un enlace a YouTube si está disponible.
   el.innerHTML = `
     <div class="visual-card meal-card">
       <div class="meal-header">
@@ -331,11 +350,14 @@ case 'joke': {
     </div>`;
   break;
 }
+// Renderizado específico para openMeteo, mostrando la temperatura actual, condiciones climáticas, 
+// velocidad del viento y otros detalles relevantes de forma visualmente atractiva, utilizando emojis para representar las condiciones del clima
 case 'weather': {
   titulo.textContent = '🌤️ Clima actual';
   const w = data.current_weather || data.current;
   if (!w) { el.innerHTML = '<p style="color:var(--muted)">No se encontraron datos del clima.</p>'; break; }
 
+  // Mapeo de códigos climáticos a descripciones y emojis para representar visualmente las condiciones del clima
   const codigos = {
     0: '☀️ Despejado', 1: '🌤️ Principalmente claro', 2: '⛅ Parcialmente nublado',
     3: '☁️ Nublado', 45: '🌫️ Niebla', 48: '🌫️ Niebla con escarcha',
@@ -346,12 +368,14 @@ case 'weather': {
     95: '⛈️ Tormenta', 99: '⛈️ Tormenta con granizo',
   };
 
+  // Extraer datos relevantes del clima, proporcionando valores por defecto si no están disponibles, y renderizar la información de forma visualmente atractiva utilizando emojis para representar las condiciones climáticas y detalles como la velocidad del viento y el momento del día
   const temp     = w.temperature ?? w.temperature_2m ?? '—';
   const viento   = w.windspeed   ?? w.wind_speed_10m  ?? '—';
   const codigo   = w.weathercode ?? w.weather_code     ?? 0;
   const desc     = codigos[codigo] || ' Desconocido';
   const esNoche  = w.is_day === 0;
 
+  // Renderizar la información del clima de forma visualmente atractiva, mostrando un ícono representativo de las condiciones climáticas, la temperatura actual, una descripción de las condiciones, la velocidad del viento, el momento del día y las coordenadas geográficas si están disponibles
   el.innerHTML = `
     <div class="visual-card weather-card">
       <div class="weather-main">
@@ -377,6 +401,7 @@ case 'weather': {
   break;
 }
 
+// Renderizado específico para restcountries, mostrando la bandera, nombre, capital, población, región, idiomas y monedas de forma visualmente atractiva. Si se reciben múltiples países (por ejemplo, al buscar por región), se muestran hasta 3 países en tarjetas separadas.
 case 'country': {
   titulo.textContent = ' Vista previa';
   const paises = Array.isArray(data) ? data : [data];
@@ -478,6 +503,11 @@ case 'country': {
 }
 
 // ── Favorito ──────────────────────────────────────────────────
+// Función para alternar el estado de favorito de la API. 
+// Envía una solicitud POST al endpoint de toggle de favoritos y 
+// actualiza el botón en función de la respuesta, mostrando un mensaje de éxito o 
+// información según corresponda. 
+// Si el usuario no está autenticado, se muestra un modal de autenticación.
 async function toggleFavorito() {
   const res = await fetch(`/api/users/favoritos/${apiId}/toggle/`, {
     method: 'POST', credentials: 'include',
@@ -515,6 +545,9 @@ function copiarJSON() {
   });
 }
 // ── Valoraciones ──────────────────────────────────────────────
+// Función para renderizar las estrellas de valoración, 
+// mostrando la media actual, el total de valoraciones y 
+// resaltando la puntuación del usuario si ha votado.
 function renderEstrellas(mediaActual, totalActual, miVoto) {
   const media = document.getElementById('valoracion-media');
   const contenedor = document.getElementById('estrellas');
@@ -540,6 +573,9 @@ function renderEstrellas(mediaActual, totalActual, miVoto) {
   });
 }
 
+// Función para enviar la valoración del usuario a la API. 
+// Envía una solicitud POST con la puntuación seleccionada y actualiza la valoración media y el total de valoraciones en la interfaz. 
+// Si el usuario no está autenticado, se muestra un modal de autenticación.
 async function votarApi(puntuacion) {
   const msg = document.getElementById('valoracion-msg');
   const res = await fetch(`/api/users/valorar/${apiId}/`, {
@@ -555,10 +591,13 @@ async function votarApi(puntuacion) {
   const api = await apiRes.json();
   renderEstrellas(api.valoracion_media, api.total_valoraciones, puntuacion);
 }
+
 // ── Historial de peticiones ───────────────────────────────────
+// Funciones para guardar y obtener el historial de peticiones realizadas por el usuario.
 const HISTORIAL_KEY = 'apihub_historial';
 const HISTORIAL_MAX = 20;
 
+// Función para guardar una entrada en el historial de peticiones.
 function guardarEnHistorial(apiNombre, url, params, respuesta) {
   const historial = obtenerHistorial();
   historial.unshift({
@@ -571,6 +610,9 @@ function guardarEnHistorial(apiNombre, url, params, respuesta) {
   localStorage.setItem(HISTORIAL_KEY, JSON.stringify(historial.slice(0, HISTORIAL_MAX)));
 }
 
+// Función para obtener el historial de peticiones desde localStorage, 
+// devolviendo un array de entradas o un array vacío si no hay historial o 
+// si ocurre un error al parsear los datos.
 function obtenerHistorial() {
   try {
     return JSON.parse(localStorage.getItem(HISTORIAL_KEY)) || [];
@@ -588,6 +630,9 @@ async function cargarRelacionadas(categoriaId, categoriaIcono, categoriaNombre) 
 
   if (!lista.length) return;
 
+  // Crear una sección para mostrar las APIs relacionadas, 
+  // con un título que incluye el nombre y el ícono de la categoría, 
+  // y una cuadrícula de tarjetas para cada API relacionada.
   const seccion = document.createElement('section');
   seccion.className = 'relacionadas-seccion';
   seccion.innerHTML = `

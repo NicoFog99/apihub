@@ -1,8 +1,10 @@
+//auth.js
 const API = '/api/users';
 
 // ── Modal HTML ────────────────────────────────────────────────────────
 function crearModal() {
   if (document.getElementById('auth-modal')) return;
+  // Insertar el HTML del modal al final del body
   document.body.insertAdjacentHTML('beforeend', `
     <div id="auth-modal" class="modal-overlay" onclick="cerrarModal(event)">
       <div class="modal-box">
@@ -49,6 +51,7 @@ function crearModal() {
   `);
 }
 
+//Función para mostrar el tab de login o registro según el botón que se haya pulsado, y actualizar las clases para resaltar el tab activo
 function mostrarTab(tab) {
   document.getElementById('form-login').style.display    = tab === 'login'    ? 'block' : 'none';
   document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
@@ -64,6 +67,7 @@ function showAuthModal() { crearModal(); }
 
 // ── Login ─────────────────────────────────────────────────────────────
 async function hacerLogin() {
+  // Obtener los valores de los campos de login y el elemento para mostrar errores
   const username = document.getElementById('login-user').value.trim();
   const password = document.getElementById('login-pass').value;
   const errEl    = document.getElementById('login-error');
@@ -71,11 +75,13 @@ async function hacerLogin() {
 
   if (!username || !password) { errEl.textContent = 'Rellena todos los campos.'; return; }
 
+  // Enviar petición POST al endpoint de login con las credenciales
   const res  = await fetch(`${API}/login/`, {
     method: 'POST', credentials: 'include',
     headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
     body: JSON.stringify({ username, password })
   });
+  // Procesar la respuesta del servidor
   const data = await res.json();
   if (res.ok) {
     document.getElementById('auth-modal').remove();
@@ -87,15 +93,18 @@ async function hacerLogin() {
 
 // ── Registro ──────────────────────────────────────────────────────────
 async function hacerRegistro() {
+  // Obtener los valores de los campos de registro y el elemento para mostrar errores
   const username = document.getElementById('reg-user').value.trim();
   const email    = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-pass').value;
   const errEl    = document.getElementById('reg-error');
   errEl.textContent = '';
 
+  // Validaciones básicas antes de enviar la petición
   if (!username || !password) { errEl.textContent = 'Usuario y contraseña son obligatorios.'; return; }
   if (password.length < 6)    { errEl.textContent = 'La contraseña debe tener al menos 6 caracteres.'; return; }
 
+  // Enviar petición POST al endpoint de registro con los datos del nuevo usuario
   const res  = await fetch(`${API}/register/`, {
     method: 'POST', credentials: 'include',
     headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
@@ -103,18 +112,21 @@ async function hacerRegistro() {
   });
   const data = await res.json();
 if (res.ok) {
+  // Si el registro es exitoso, mostrar el tab de login con un mensaje indicando que se ha creado la cuenta y que se debe verificar el email antes de iniciar sesión
   mostrarTab('login');
   const loginErr = document.getElementById('login-error');
   loginErr.textContent = '📧 Cuenta creada. Revisa tu email para verificarla antes de iniciar sesión.';
   loginErr.style.color = '#16a34a';
 
   } else {
+    // Si hay errores, mostrar los mensajes de error devueltos por el servidor. Se asume que el servidor devuelve un objeto con arrays de errores para cada campo, por lo que se extraen y se muestran en un solo mensaje.
     const msgs = Object.values(data).flat().join(' ');
     errEl.textContent = msgs || 'Error al registrarse.';
   }
 }
 
 // ── Logout ────────────────────────────────────────────────────────────
+// Función para cerrar la sesión del usuario, enviando una petición POST al endpoint de logout y luego recargando la página para reflejar el cambio
 async function logoutUser() {
   await fetch(`${API}/logout/`, {
     method: 'POST', credentials: 'include',
@@ -123,6 +135,7 @@ async function logoutUser() {
   location.href = '/';
 }
 // ── Toast notifications ───────────────────────────────────────
+// Función para mostrar notificaciones tipo toast en la esquina superior derecha de la pantalla. Se pueden especificar el mensaje, el tipo (success, error, info) y la duración en milisegundos. El toast se elimina automáticamente después de la duración especificada.
 function showToast(mensaje, tipo = 'success', duracion = 3000) {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -143,6 +156,10 @@ function showToast(mensaje, tipo = 'success', duracion = 3000) {
 }
 
 // ── Sesión ────────────────────────────────────────────────────────────
+/* Función para verificar si el usuario tiene una sesión activa al cargar la página. 
+ Si la sesión es válida, se muestra un dropdown con la información del usuario y enlaces 
+ a su perfil, favoritos e historial. Si no hay sesión, se muestra un enlace para iniciar sesión. 
+ También se manejan los eventos para cerrar el dropdown al hacer click fuera de él.*/
 async function checkSession() {
   try {
     const res = await fetch(`${API}/me/`, { credentials: 'include' });
@@ -200,11 +217,11 @@ async function checkSession() {
     }
   } catch(e) {}
 }
-
+// Función para alternar la visibilidad del dropdown del usuario al hacer click en el avatar
 function toggleDropdown() {
   document.getElementById('nav-dropdown').classList.toggle('activo');
 }
-
+// Función para obtener el valor de una cookie por su nombre
 function getCookie(name) {
   return document.cookie.split(';')
     .map(c => c.trim()).find(c => c.startsWith(name + '='))
@@ -212,6 +229,7 @@ function getCookie(name) {
 }
 
 // ── Tema oscuro ───────────────────────────────────────────────
+// Función para alternar entre tema claro y oscuro, guardando la preferencia en localStorage para que se mantenga al recargar la página. También actualiza el texto del botón de tema para reflejar el estado actual.
 function toggleTema() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   const nuevo  = isDark ? 'light' : 'dark';

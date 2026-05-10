@@ -1,4 +1,8 @@
+//perfil.js
+
 // ── Navegación por pestañas ───────────────────────────────────
+// Función para cambiar entre las pestañas del perfil (favoritos, historial, ajustes), mostrando la sección correspondiente y actualizando el estado activo de los botones de pestaña. 
+// Si se selecciona la pestaña de historial, también se renderiza el historial de peticiones.
 function cambiarTab(tab) {
   ['favoritos', 'historial', 'ajustes'].forEach(t => {
     document.getElementById(`tab-${t}`).style.display = t === tab ? 'block' : 'none';
@@ -8,6 +12,9 @@ function cambiarTab(tab) {
   if (tab === 'historial') renderHistorial();
 }
 
+// ── Perfil de usuario ─────────────────────────────────────────
+// Función para cargar la información del perfil del usuario, incluyendo su nombre de usuario, email, número de favoritos y peticiones realizadas, y para renderizar la lista de APIs favoritas. 
+// También se encarga de abrir la pestaña correspondiente según el parámetro de URL "tab".
 async function cargarPerfil() {
   const res = await fetch('/api/users/me/', { credentials: 'include' });
   if (!res.ok) { location.href = '/'; return; }
@@ -35,9 +42,11 @@ async function cargarPerfil() {
   cambiarTab(tab);
 }
 
+// Función para renderizar la lista de APIs favoritas del usuario, mostrando una tarjeta para cada API con su información relevante y un botón para quitarla de favoritos. 
 function renderFavoritos(favs) {
   const container = document.getElementById('lista-favoritos');
   if (!favs.length) {
+    // Si no hay favoritos, se muestra un mensaje indicando que aún no tiene favoritos.
     container.innerHTML = '<p style="color:var(--muted)">Aún no tienes favoritos. Explora el catálogo y guarda las que más te gusten. ⭐</p>';
     return;
   }
@@ -53,6 +62,7 @@ function renderFavoritos(favs) {
   `).join('');
 }
 
+// Función para quitar una API de favoritos.
 async function quitarFavorito(e, apiId) {
   e.stopPropagation();
   await fetch(`/api/users/favoritos/${apiId}/toggle/`, {
@@ -63,8 +73,11 @@ async function quitarFavorito(e, apiId) {
 }
 
 // ── Historial ─────────────────────────────────────────────────
+// Clave para almacenar el historial de peticiones en localStorage
 const HISTORIAL_KEY = 'apihub_historial';
 
+// Función para agregar una nueva entrada al historial de peticiones, guardando la información relevante 
+// como el nombre de la API, la URL, los parámetros, la respuesta y la fecha.
 function obtenerHistorial() {
   try {
     return JSON.parse(localStorage.getItem(HISTORIAL_KEY)) || [];
@@ -73,12 +86,14 @@ function obtenerHistorial() {
   }
 }
 
+// Función para agregar una nueva entrada al historial de peticiones, guardando la información relevante
 function limpiarHistorial() {
   localStorage.removeItem(HISTORIAL_KEY);
   renderHistorial();
   cargarPerfil();
 }
 
+// Función para agregar una nueva entrada al historial de peticiones, guardando la información relevante
 function renderHistorial() {
   const contenedor = document.getElementById('historial-lista');
   const historial  = obtenerHistorial();
@@ -104,6 +119,8 @@ function renderHistorial() {
 }
 
 // ── Ajustes de cuenta ─────────────────────────────────────────
+// Funciones para cambiar el nombre de usuario, email, contraseña y eliminar la cuenta, 
+// enviando las solicitudes correspondientes a la API REST y mostrando mensajes de éxito o error según corresponda.
 async function mostrarMsg(id, res) {
   const el   = document.getElementById(id);
   const data = await res.json();
@@ -113,6 +130,7 @@ async function mostrarMsg(id, res) {
   setTimeout(() => el.textContent = '', 3000);
   showToast(msg, res.ok ? 'success' : 'error');
 }
+// Función para cambiar el nombre de usuario, enviando una solicitud POST a la API REST con el nuevo nombre de usuario, y mostrando un mensaje de éxito o error según corresponda.
 async function cambiarUsername() {
   const username = document.getElementById('nuevo-username').value.trim();
   const res = await fetch('/api/users/cambiar-username/', {
@@ -124,6 +142,7 @@ async function cambiarUsername() {
   if (res.ok) cargarPerfil();
 }
 
+// Función para cambiar el email, enviando una solicitud POST a la API REST con el nuevo email, y mostrando un mensaje de éxito o error según corresponda.
 async function cambiarEmail() {
   const email = document.getElementById('nuevo-email').value.trim();
   const res = await fetch('/api/users/cambiar-email/', {
@@ -134,7 +153,7 @@ async function cambiarEmail() {
   await mostrarMsg('msg-email', res);
   if (res.ok) cargarPerfil();
 }
-
+// Función para cambiar la contraseña, enviando una solicitud POST a la API REST con la contraseña actual y la nueva contraseña, y mostrando un mensaje de éxito o error según corresponda.
 async function cambiarPassword() {
   const password_actual = document.getElementById('password-actual').value;
   const password_nuevo  = document.getElementById('password-nuevo').value;
@@ -150,6 +169,8 @@ async function cambiarPassword() {
   }
 }
 
+// Función para eliminar la cuenta, enviando una solicitud DELETE a la API REST con la contraseña actual para confirmar la acción, y mostrando un mensaje de éxito o error según corresponda.
+//  Si la eliminación es exitosa, se redirige al usuario a la página de inicio.
 async function eliminarCuenta() {
   const password = document.getElementById('password-eliminar').value;
   if (!confirm('¿Estás seguro? Esta acción no se puede deshacer.')) return;

@@ -1,5 +1,7 @@
+# models.py
 from django.db import models
 
+# 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
     icono  = models.CharField(max_length=50, blank=True, help_text="Emoji o clase de icono")
@@ -12,6 +14,7 @@ class Categoria(models.Model):
 
 
 class Api(models.Model):
+    # Opciones de autenticación para el campo auth_tipo
     AUTH_OPCIONES = [
         ('none',   'Sin autenticación'),
         ('apikey', 'API Key'),
@@ -19,7 +22,7 @@ class Api(models.Model):
         
     ]
 
-
+    # Opciones de renderizado para el frontend, que pueden ser usadas para mostrar la respuesta de la API de diferentes formas
     RENDER_OPCIONES = [
         ('json',    'JSON'),
         ('pokemon', 'Pokémon'),
@@ -32,6 +35,7 @@ class Api(models.Model):
         ('joke', 'JokeAPI'),  
     ]
 
+    # Campos principales de la API
     nombre      = models.CharField(max_length=200)
     descripcion = models.TextField()
     url_base    = models.URLField()
@@ -59,8 +63,7 @@ class Api(models.Model):
         verbose_name_plural = "APIs"
         ordering = ['nombre']
 
-# Nueva clase para guardar puntuaciones de usuarios a APIs
-
+#Clase para guardar puntuaciones de usuarios a APIs
 class PuntuacionApi(models.Model):
     usuario = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='puntuaciones')
     api = models.ForeignKey(Api, on_delete=models.CASCADE, related_name='puntuaciones')

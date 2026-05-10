@@ -4,6 +4,8 @@ async function cargarStats() {
   const data = await res.json();
 
   // ── Resumen general ───────────────────────────────────────
+  // Renderiza un resumen general con estadísticas clave como el total de APIs activas, categorías, usuarios registrados, la API mejor valorada, 
+  // la más visitada y la categoría con más APIs, utilizando tarjetas visuales para destacar cada métrica.
   document.getElementById('stats-resumen').innerHTML = `
     <div class="resumen-grid">
       <div class="resumen-card">
@@ -36,6 +38,7 @@ async function cargarStats() {
     </div>`;
 
   // ── Top valoradas ─────────────────────────────────────────
+  // Renderiza una lista de las APIs mejor valoradas, mostrando su posición, nombre y valoración media, y permitiendo hacer clic en cada una para ver su detalle.
   document.getElementById('top-valoradas').innerHTML = data.top_valoradas.map((a, i) => `
     <div class="stats-row" onclick="location.href='/api/${a.id}/'">
       <span class="stats-pos">${i + 1}</span>
@@ -45,6 +48,8 @@ async function cargarStats() {
   `).join('');
 
   // ── Top visitadas ─────────────────────────────────────────
+  // Renderiza una lista de las APIs más visitadas, mostrando su posición, nombre y total de visitas, 
+  // y permitiendo hacer clic en cada una para ver su detalle.
   document.getElementById('top-visitadas').innerHTML = data.top_visitadas.map((a, i) => `
     <div class="stats-row" onclick="location.href='/api/${a.id}/'">
       <span class="stats-pos">${i + 1}</span>
@@ -54,6 +59,8 @@ async function cargarStats() {
   `).join('');
 
   // ── Gráfica de categorías ─────────────────────────────────
+  // Renderiza una gráfica de dona que muestra la distribución de APIs por categoría, utilizando colores para diferenciar cada categoría y 
+  // mostrando el total de APIs en cada una al pasar el cursor.
   const colores = ['#2563eb', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#ec4899'];
   new Chart(document.getElementById('categorias-chart'), {
     type: 'doughnut',

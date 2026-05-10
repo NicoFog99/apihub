@@ -1,8 +1,12 @@
+<!-- stats.html -->
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Estadísticas — API Hub{% endblock %}
 
 {% block content %}
+<!-- Esta plantilla muestra la página de estadísticas del catálogo de APIs. Incluye una sección hero con un título y descripción, un resumen con estadísticas clave, 
+ y varias tarjetas que muestran el top 5 de APIs más valoradas, el top 5 de APIs más visitadas y un gráfico de distribución de APIs por categoría. 
+ Utiliza Chart.js para renderizar el gráfico de categorías. -->
   <div class="hero" style="margin-bottom:2rem">
     <div class="hero-content">
       <h1> Estadísticas del catálogo</h1>

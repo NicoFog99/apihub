@@ -2,6 +2,7 @@
 const API_URL = '/api';
 let urlActual = `${API_URL}/apis/`;
 
+// Función para asignar una clase de color a la etiqueta de categoría basada en un hash del nombre de la categoría, asegurando que cada categoría tenga un color consistente y distintivo.
 function badgeClass(nombre) {
   const colores = [
     'badge-entretenimiento',
@@ -19,6 +20,7 @@ function badgeClass(nombre) {
   return colores[Math.abs(hash) % colores.length];
 }
 
+// Función para cargar las categorías desde la API y poblar el filtro de categorías en el formulario de búsqueda, además de actualizar el contador de categorías disponibles.
 async function cargarCategorias() {
   const res  = await fetch(`${API_URL}/categorias/`);
   const cats = await res.json();
@@ -30,6 +32,7 @@ async function cargarCategorias() {
   });
 }
 
+// Función para cargar las APIs desde la API REST, aplicando los filtros de búsqueda, categoría, tipo de autenticación, orden y estado de implementación.
 async function cargarApis(search = '', categoria = '', auth = '', orden = '', implementada = '', url = null) {
   mostrarSkeleton();
   if (!url) {
@@ -56,6 +59,8 @@ async function cargarApis(search = '', categoria = '', auth = '', orden = '', im
   renderPaginacion(data.previous, data.next);
 }
 
+// Función para renderizar los botones de paginación "Anterior" y "Siguiente" en función de la existencia de páginas anteriores o siguientes, 
+// y asignarles los eventos de clic correspondientes para cargar las APIs de la página seleccionada.
 function renderPaginacion(previous, next) {
   const contenedor = document.getElementById('paginacion');
   if (!contenedor) return;
@@ -85,6 +90,8 @@ function renderPaginacion(previous, next) {
 // Vista activa guardada en localStorage
 let vistaActual = localStorage.getItem('apihub_vista') || 'grid';
 
+// Función para cambiar entre vista de cuadrícula y lista, actualizando la clase del contenedor de APIs y 
+// el estado activo de los botones de vista, además de guardar la preferencia en localStorage para mantenerla en futuras visitas.
 function cambiarVista(vista) {
   vistaActual = vista;
   localStorage.setItem('apihub_vista', vista);
@@ -95,7 +102,7 @@ function cambiarVista(vista) {
   btnGrid.classList.toggle('activo', vista === 'grid');
   btnList.classList.toggle('activo', vista === 'list');
 }
-
+// Función para renderizar la lista de APIs en el contenedor principal, creando una tarjeta para cada API con su información relevante
 function renderApis(apis) {
   const container = document.getElementById('lista-apis');
   if (!apis.length) {
@@ -139,6 +146,8 @@ function renderApis(apis) {
     btnList.classList.toggle('activo', vistaActual === 'list');
   }
 }
+// Función para mostrar un esqueleto de carga mientras se obtienen los datos de las APIs, creando varias tarjetas 
+// de esqueleto con animación para mejorar la experiencia del usuario durante la espera.
 function mostrarSkeleton() {
   const container = document.getElementById('lista-apis');
   container.innerHTML = Array(6).fill(`
@@ -151,6 +160,7 @@ function mostrarSkeleton() {
     </div>
   `).join('');
 }
+// Evento para cargar las categorías y las APIs al cargar la página, y para aplicar los filtros de búsqueda con un debounce para evitar demasiadas solicitudes a la API mientras el usuario escribe.
 document.addEventListener('DOMContentLoaded', () => {
   const buscador  = document.getElementById('buscador');
   const filtCat   = document.getElementById('filtro-categoria');
@@ -159,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const filtImpl  = document.getElementById('filtro-implementada');
   cambiarVista(vistaActual);
 
+  // Función para aplicar los filtros seleccionados y cargar las APIs correspondientes
   function aplicarFiltros() {
     cargarApis(buscador.value, filtCat.value, filtAuth.value, filtOrden.value, filtImpl.checked ? 'true' : '');
   }

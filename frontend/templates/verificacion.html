@@ -1,6 +1,10 @@
+<!-- verificacion.html -->
 {% extends "base.html" %}
 {% block title %}Verificación — API Hub{% endblock %}
 {% block content %}
+<!-- Esta plantilla se muestra cuando un usuario hace clic en el enlace de verificación que se envía por correo electrónico después de registrarse. Muestra un mensaje de 
+  éxito si la verificación fue exitosa o un mensaje de error si el enlace es inválido o ha expirado. 
+  El diseño es simple y centrado, con un ícono grande que indica el resultado de la verificación y un botón para volver al catálogo de APIs. -->
   <div style="max-width:500px;margin:4rem auto;text-align:center">
     <div style="background:var(--surface);border-radius:20px;padding:3rem;box-shadow:var(--shadow)">
       {% if exito %}

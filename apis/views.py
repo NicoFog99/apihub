@@ -1,3 +1,5 @@
+# views.py
+
 import requests
 from rest_framework import viewsets, filters
 from rest_framework.decorators import api_view, permission_classes
@@ -8,12 +10,12 @@ from django.db.models import Avg
 from .models import Api, Categoria
 from .serializers import ApiSerializer, CategoriaSerializer
 
-
+# ViewSet para listar categorías, con opción de búsqueda por nombre
 class CategoriaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset         = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
-
+# ViewSet para listar APIs, con filtros por categoría, tipo de autenticación, ordenamiento y si están implementadas en el frontend
 class ApiViewSet(viewsets.ReadOnlyModelViewSet):
     queryset         = Api.objects.filter(activa=True)
     serializer_class = ApiSerializer
@@ -50,7 +52,7 @@ class ApiViewSet(viewsets.ReadOnlyModelViewSet):
 
         return qs
 
-
+# Endpoint para hacer peticiones proxy a APIs externas, usado por el frontend para evitar problemas de CORS y para incrementar el contador de visitas de cada API
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
 def proxy_request(request):
@@ -73,6 +75,8 @@ def proxy_request(request):
         return Response({'status': resp.status_code, 'data': resp.json()})
     except Exception as e:
         return Response({'error': str(e)}, status=400)
+    
+# Endpoint para obtener estadísticas generales de la plataforma, como APIs más valoradas, más visitadas, categorías con más APIs, etc.    
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def estadisticas(request):

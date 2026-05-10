@@ -1,3 +1,4 @@
+#views.py
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
@@ -22,8 +23,6 @@ def register(request):
         perfil = PerfilUsuario.objects.create(usuario=user)
 
         # Enlace de verificación
-# Enlace de verificación
-        # Enlace de verificación
         token = str(perfil.token_verificacion)
         #Arreglo para railway, variable anterior: enlace = f"http://localhost:8000/verificar/{token}/"
         enlace = f"{request.scheme}://{request.get_host()}/verificar/{token}/"
@@ -46,6 +45,7 @@ from django.shortcuts import render, redirect
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+# Vista para manejar la verificación de email a través del token enviado por correo(pasado por consola para demo).
 def verificar_email(request, token):
     try:
         perfil = PerfilUsuario.objects.get(token_verificacion=token)
@@ -67,6 +67,7 @@ def verificar_email(request, token):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+# Vista para manejar el inicio de sesión, verificando que el usuario esté activo (es decir, que haya verificado su email).
 def user_login(request):
     username = request.data.get('username')
     password = request.data.get('password')
@@ -79,17 +80,20 @@ def user_login(request):
     return Response({'error': 'Credenciales incorrectas.'}, status=400)
 
 @api_view(['POST'])
+# Vista para manejar el cierre de sesión del usuario.
 def user_logout(request):
     logout(request)
     return Response({'mensaje': 'Sesión cerrada.'})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+# Vista para obtener los datos del usuario autenticado, como su nombre de usuario y email.
 def me(request):
     return Response({'username': request.user.username, 'email': request.user.email})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+# Vista para obtener la lista de APIs favoritas del usuario autenticado, utilizando el serializador FavoritoSerializer para formatear la respuesta.
 def favoritos_list(request):
     favs = Favorito.objects.filter(usuario=request.user).select_related('api')
     return Response(FavoritoSerializer(favs, many=True).data)
@@ -107,6 +111,7 @@ def favorito_toggle(request, api_id):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+# Vista para manejar la valoración de una API por parte del usuario autenticado, permitiendo crear o actualizar la puntuación.
 def valorar_api(request, api_id):
     puntuacion = request.data.get('puntuacion')
     if not puntuacion or not (1 <= int(puntuacion) <= 5):
@@ -121,6 +126,8 @@ def valorar_api(request, api_id):
 # Obtener la valoración del usuario para una API específica
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+# Vista para obtener la valoración que el usuario autenticado ha dado a una API específica, 
+# devolviendo la puntuación o null si no ha valorado.
 def mi_valoracion(request, api_id):
     try:
         v = Valoracion.objects.get(usuario=request.user, api_id=api_id)
@@ -129,6 +136,8 @@ def mi_valoracion(request, api_id):
         return Response({'puntuacion': None})
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+# Vista para manejar el cambio de contraseña del usuario autenticado, 
+# verificando la contraseña actual y validando la nueva contraseña antes de actualizarla.
 def cambiar_password(request):
     password_actual = request.data.get('password_actual')
     password_nuevo  = request.data.get('password_nuevo')
@@ -145,6 +154,8 @@ def cambiar_password(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+# Vista para manejar el cambio de email del usuario autenticado, 
+# validando el nuevo email y asegurándose de que no esté en uso por otro usuario antes de actualizarlo.
 def cambiar_email(request):
     email = request.data.get('email', '').strip()
     if not email or '@' not in email:
@@ -157,6 +168,7 @@ def cambiar_email(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+# Vista para manejar el cambio de nombre de usuario del usuario autenticado,
 def cambiar_username(request):
     username = request.data.get('username', '').strip()
     if not username:
@@ -169,6 +181,8 @@ def cambiar_username(request):
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
+# Vista para manejar la eliminación de la cuenta del usuario autenticado, 
+# verificando la contraseña antes de proceder con la eliminación.
 def eliminar_cuenta(request):
     password = request.data.get('password')
     if not request.user.check_password(password):
