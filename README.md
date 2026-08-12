@@ -104,4 +104,4 @@ apihub/
 
 ## Autor
 
-**Nicoló Foglino** — 2DAW Semipresencial  
+**Nicoló Foglino** — 2DAW
