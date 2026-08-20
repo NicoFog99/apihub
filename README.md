@@ -1,6 +1,6 @@
 # API Hub
 
-Directorio interactivo de APIs públicas desarrollado como proyecto final.
+Directorio interactivo de APIs públicas desarrollado como proyecto final de DAW.
 
 Permite explorar, buscar, filtrar y probar APIs reales directamente en el navegador, con sistema de usuarios, favoritos y valoraciones.
 
@@ -38,19 +38,7 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
 ---
 ## Capturas
 <table>
-  <tr>
-    <td align="center">
-      <strong> Estadísticas</strong><br>
-      Estadísticas y visualización de la actividad del catálogo.<br><br>
-      <img src="imagenes/estadisticas2.png" alt="Estadísticas">
-    </td>
-     <td align="center">
-      <strong>Grafica categorias</strong><br>
-      Grafica con todas las categorias disponibles.<br><br>
-      <img src="imagenes/grafica.png" alt="Grafica">
-    </td>
-  </tr>
-  <tr>
+    <tr>
     <td align="center">
       <strong>API Tester</strong><br>
       Permite realizar peticiones y consultar las respuestas de las APIs.<br><br>
@@ -62,10 +50,23 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
       <img src="imagenes/visualizacion.png" alt="Visualización">
     </td>
   </tr>
-
+  
   <tr>
     <td align="center">
-      <strong> Perfil y configuración</strong><br>
+      <strong>Estadísticas</strong><br>
+      Estadísticas y visualización de la actividad del catálogo.<br><br>
+      <img src="imagenes/estadisticas2.png" alt="Estadísticas">
+    </td>
+     <td align="center">
+      <strong>Gráfica de categorías</strong><br>
+      Gráfica con todas las categorias disponibles.<br><br>
+      <img src="imagenes/grafica.png" alt="Grafica">
+    </td>
+  </tr>
+    
+  <tr>
+    <td align="center">
+      <strong>Perfil y configuración</strong><br>
       Gestión del perfil y preferencias del usuario.<br><br>
       <img src="imagenes/perfil_ajustes.png" alt="Configuración del perfil">
     </td>
@@ -88,7 +89,7 @@ API Hub cuenta con documentación interactiva de sus endpoints mediante Swagger/
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/apihub.git
+git clone https://github.com/NicoFog99/apihub.git
 cd apihub
 
 # 2. Crear y activar el entorno virtual
@@ -154,4 +155,4 @@ apihub/
 
 ## Autor
 
-**Nicoló Foglino** — 2DAW
+**Nicoló Foglino** — Estudiante de 2DAW
