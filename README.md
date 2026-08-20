@@ -42,12 +42,12 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
     <td align="center">
       <strong> Estadísticas</strong><br>
       Estadísticas y visualización de la actividad del catálogo.<br><br>
-      <img src="imagenes/estadisticas.png" alt="Estadísticas">
+      <img src="imagenes/estadisticas2.png" alt="Estadísticas">
     </td>
      <td align="center">
       <strong>Grafica categorias</strong><br>
       Grafica con todas las categorias disponibles.<br><br>
-      <img src="imagenes/categoria.png" alt="Categoria">
+      <img src="imagenes/grafica.png" alt="Grafica">
     </td>
   </tr>
   <tr>
