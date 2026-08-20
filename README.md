@@ -43,6 +43,11 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
       Estadísticas y visualización de la actividad del catálogo.<br><br>
       <img src="imagenes/estadisticas.png" alt="Estadísticas">
     </td>
+     <td align="center">
+      <strong>Grafica categorias</strong><br>
+      Grafica con todas las categorias disponibles.<br><br>
+      <img src="imagenes/categoria" alt="Categoria">
+    </td>
   </tr>
   <tr>
     <td align="center">
@@ -70,13 +75,14 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
     </td>
   </tr>
 </table>
-##  Documentación de la API
 
+## Documentación de la API
 API Hub cuenta con documentación interactiva de sus endpoints mediante Swagger/OpenAPI.
 
 <p align="center">
   <img src="imagenes/swagger.png" alt="Documentación Swagger de API Hub">
 </p>
+
 ## Instalación local
 
 ```bash
