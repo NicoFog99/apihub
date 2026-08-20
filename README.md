@@ -38,6 +38,7 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
 ---
 ## Capturas
 <table>
+  <tr>
     <td align="center">
       <strong> Estadísticas</strong><br>
       Estadísticas y visualización de la actividad del catálogo.<br><br>
