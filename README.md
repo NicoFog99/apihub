@@ -36,16 +36,16 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
 ## Capturas
 <table>
   <tr>
-    <td><img src="apihub/imagenes/home.png" alt="Página principal"></td>
-    <td><img src="apihub/imagenes/estadisticas.png" alt="Estadísticas"></td>
+    <td><img src="imagenes/home.png" alt="Página principal"></td>
+    <td><img src="imagenes/estadisticas.png" alt="Estadísticas"></td>
   </tr>
   <tr>
-    <td><img src="apihub/screenshots/api_tester.png" alt="API Tester"></td>
-    <td><img src="apihub/screenshots/visualizacion.png" alt="Visualización"></td>
+    <td><img src="imagenes/api_tester.png" alt="API Tester"></td>
+    <td><img src="imagenes/visualizacion.png" alt="Visualización"></td>
   </tr>
   <tr>
-    <td><img src="apihub/screenshots/perfil_ajustes.png" alt="Configuración del perfil"></td>
-    <td><img src="apihub/screenshots/perfil_historial.png" alt="Historial del perfil"></td>
+    <td><img src="imagenes/perfil_ajustes.png" alt="Configuración del perfil"></td>
+    <td><img src="imagenes/perfil_historial.png" alt="Historial del perfil"></td>
   </tr>
 </table>
 ## Instalación local
