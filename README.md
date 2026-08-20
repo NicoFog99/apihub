@@ -46,7 +46,7 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
      <td align="center">
       <strong>Grafica categorias</strong><br>
       Grafica con todas las categorias disponibles.<br><br>
-      <img src="imagenes/categoria" alt="Categoria">
+      <img src="imagenes/categoria.png" alt="Categoria">
     </td>
   </tr>
   <tr>
