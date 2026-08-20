@@ -4,6 +4,9 @@ Directorio interactivo de APIs públicas desarrollado como proyecto final.
 
 Permite explorar, buscar, filtrar y probar APIs reales directamente en el navegador, con sistema de usuarios, favoritos y valoraciones.
 
+<p align="center">
+  <img src="imagenes/home.png" alt="API Hub - Página principal">
+</p>
 ---
 
 ## Tecnologías
@@ -35,19 +38,45 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
 ---
 ## Capturas
 <table>
-  <tr>
-    <td><img src="imagenes/home.png" alt="Página principal"></td>
-    <td><img src="imagenes/estadisticas.png" alt="Estadísticas"></td>
+    <td align="center">
+      <strong> Estadísticas</strong><br>
+      Estadísticas y visualización de la actividad del catálogo.<br><br>
+      <img src="imagenes/estadisticas.png" alt="Estadísticas">
+    </td>
   </tr>
   <tr>
-    <td><img src="imagenes/api_tester.png" alt="API Tester"></td>
-    <td><img src="imagenes/visualizacion.png" alt="Visualización"></td>
+    <td align="center">
+      <strong>API Tester</strong><br>
+      Permite realizar peticiones y consultar las respuestas de las APIs.<br><br>
+      <img src="imagenes/api_tester.png" alt="API Tester">
+    </td>
+    <td align="center">
+      <strong>Visualización</strong><br>
+      Representaciones visuales de los datos obtenidos de determinadas APIs.<br><br>
+      <img src="imagenes/visualizacion.png" alt="Visualización">
+    </td>
   </tr>
+
   <tr>
-    <td><img src="imagenes/perfil_ajustes.png" alt="Configuración del perfil"></td>
-    <td><img src="imagenes/perfil_historial.png" alt="Historial del perfil"></td>
+    <td align="center">
+      <strong> Perfil y configuración</strong><br>
+      Gestión del perfil y preferencias del usuario.<br><br>
+      <img src="imagenes/perfil_ajustes.png" alt="Configuración del perfil">
+    </td>
+    <td align="center">
+      <strong> Historial</strong><br>
+      Historial de las peticiones realizadas desde el tester.<br><br>
+      <img src="imagenes/perfil_historial.png" alt="Historial del perfil">
+    </td>
   </tr>
 </table>
+##  Documentación de la API
+
+API Hub cuenta con documentación interactiva de sus endpoints mediante Swagger/OpenAPI.
+
+<p align="center">
+  <img src="imagenes/swagger.png" alt="Documentación Swagger de API Hub">
+</p>
 ## Instalación local
 
 ```bash
