@@ -32,8 +32,15 @@ Permite explorar, buscar, filtrar y probar APIs reales directamente en el navega
 - Perfil con pestañas: favoritos, historial y ajustes de cuenta
 - Modo oscuro persistido
 - Página de estadísticas globales con gráfica interactiva
-- Registro con verificación por email
+- Registro con verificación por email (enlace de un solo uso que caduca a las 24 horas)
 - Documentación Swagger en `/api/docs/`
+
+### Seguridad
+
+- El proxy del tester solo acepta URLs de APIs del catálogo, también al seguir redirecciones (protección contra SSRF)
+- Los datos de la base de datos y de las APIs externas se escapan antes de pintarlos en el HTML (protección contra XSS)
+- CORS cerrado por defecto: el frontend se sirve desde el mismo dominio que la API
+- Throttling, protección CSRF y contraseñas con hash gracias a Django y Django REST Framework
 
 ---
 ## Capturas
@@ -136,7 +143,7 @@ EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
 pytest tests/ -v
 ```
 
-20 tests automatizados cubriendo catálogo, autenticación, favoritos y valoraciones.
+43 tests automatizados cubriendo catálogo, autenticación, favoritos, valoraciones y seguridad (proxy, verificación de email y validación de datos).
 
 ---
 

@@ -1,6 +1,9 @@
 # views.py
 
+from urllib.parse import urljoin, urlparse
+
 import requests
+from django.db.models import F
 from rest_framework import viewsets, filters
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -52,29 +55,73 @@ class ApiViewSet(viewsets.ReadOnlyModelViewSet):
 
         return qs
 
-# Endpoint para hacer peticiones proxy a APIs externas, usado por el frontend para evitar problemas de CORS y para incrementar el contador de visitas de cada API
-@api_view(['GET', 'POST'])
+def api_del_catalogo(url):
+    """
+    Devuelve la API activa del catálogo a la que pertenece esta URL, o None si no pertenece a ninguna.
+
+    Se compara por partes (protocolo, dominio y ruta) en lugar de con startswith, porque con
+    startswith una URL como "https://test.com.evil.com" o "https://test.com@evil.com"
+    pasaría el filtro de "https://test.com".
+    """
+    if not isinstance(url, str):
+        return None
+    destino = urlparse(url)
+    if destino.scheme not in ('http', 'https') or not destino.hostname or destino.username or '..' in destino.path:
+        return None
+
+    for api in Api.objects.filter(activa=True).only('id', 'url_base'):
+        base = urlparse(api.url_base)
+        if destino.scheme != base.scheme or destino.netloc.lower() != base.netloc.lower():
+            continue
+        ruta_base = base.path.rstrip('/')
+        if not ruta_base or destino.path == ruta_base or destino.path.startswith(ruta_base + '/'):
+            return api
+    return None
+
+
+MAX_REDIRECCIONES = 3
+
+
+# Endpoint para hacer peticiones proxy a APIs externas, usado por el frontend para evitar problemas de CORS y para incrementar el contador de visitas de cada API.
+# Solo acepta URLs que pertenezcan a una API del catálogo: así nadie puede usar el servidor para hacer peticiones a sitios arbitrarios (SSRF).
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def proxy_request(request):
-    url     = request.data.get('url') or request.query_params.get('url')
-    params  = request.data.get('params', {})
-    headers = {'Accept': 'application/json'}
+    url    = request.data.get('url')
+    params = request.data.get('params') or {}
+    if not isinstance(params, dict):
+        return Response({'error': 'Los parámetros deben ser un objeto JSON.'}, status=400)
 
-    # Incrementar visitas buscando la API cuya url_base coincide con la petición
+    api = api_del_catalogo(url)
+    if api is None:
+        return Response({'error': 'Solo se pueden probar APIs del catálogo.'}, status=400)
+
+    # Suma la visita directamente en la base de datos (F evita perder visitas si llegan dos peticiones a la vez)
+    Api.objects.filter(pk=api.pk).update(total_visitas=F('total_visitas') + 1)
+
     try:
-        for a in Api.objects.filter(activa=True):
-            if url and url.startswith(a.url_base):
-                a.total_visitas += 1
-                a.save()
+        # Las redirecciones se siguen a mano para comprobar que el destino también es del catálogo
+        for _ in range(MAX_REDIRECCIONES + 1):
+            resp = requests.get(url, params=params, headers={'Accept': 'application/json'},
+                                timeout=10, allow_redirects=False)
+            if not resp.is_redirect:
                 break
-    except Exception:
-        pass
+            url, params = urljoin(url, resp.headers.get('Location', '')), None
+            if api_del_catalogo(url) is None:
+                return Response({'error': 'La API redirige a un sitio que no está en el catálogo.'}, status=502)
+        else:
+            return Response({'error': 'La API ha hecho demasiadas redirecciones.'}, status=502)
+    except requests.Timeout:
+        return Response({'error': 'La API externa ha tardado demasiado en responder.'}, status=504)
+    except requests.RequestException:
+        return Response({'error': 'No se ha podido conectar con la API externa.'}, status=502)
 
     try:
-        resp = requests.get(url, params=params, headers=headers, timeout=10)
-        return Response({'status': resp.status_code, 'data': resp.json()})
-    except Exception as e:
-        return Response({'error': str(e)}, status=400)
+        datos = resp.json()
+    except ValueError:
+        return Response({'error': 'La API externa no ha devuelto JSON.', 'status': resp.status_code}, status=502)
+
+    return Response({'status': resp.status_code, 'data': datos})
     
 # Endpoint para obtener estadísticas generales de la plataforma, como APIs más valoradas, más visitadas, categorías con más APIs, etc.    
 @api_view(['GET'])

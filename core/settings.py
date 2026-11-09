@@ -116,8 +116,13 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# CORS - permite peticiones del frontend al backend
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS: el frontend se sirve desde el mismo dominio que la API, así que no necesita CORS.
+# Solo se permiten los orígenes que se indiquen en la variable de entorno (por defecto, ninguno).
+CORS_ALLOWED_ORIGINS = [o.strip() for o in config('CORS_ALLOWED_ORIGINS', default='').split(',') if o.strip()]
+
+# Caducidad del enlace de verificación de email (en horas)
+VERIFICACION_HORAS = config('VERIFICACION_HORAS', default=24, cast=int)
+
 # Email — en desarrollo sale por terminal
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 

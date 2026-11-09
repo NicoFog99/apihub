@@ -20,18 +20,18 @@ async function cargarStats() {
         <strong>${data.total_usuarios}</strong>
         <span>Usuarios registrados</span>
       </div>
-      <div class="resumen-card destacado" onclick="location.href='/api/${data.mas_valorada.id}/'">
-        <strong>★ ${data.mas_valorada.media}</strong>
+      <div class="resumen-card destacado" onclick="location.href='/api/${Number(data.mas_valorada.id)}/'">
+        <strong>★ ${esc(data.mas_valorada.media)}</strong>
         <span>Mejor valorada</span>
-        <p>${data.mas_valorada.nombre || '—'}</p>
+        <p>${esc(data.mas_valorada.nombre || '—')}</p>
       </div>
-      <div class="resumen-card destacado" onclick="location.href='/api/${data.mas_visitada.id}/'">
+      <div class="resumen-card destacado" onclick="location.href='/api/${Number(data.mas_visitada.id)}/'">
         <strong>👁 ${data.mas_visitada.total_visitas}</strong>
         <span>Más visitada</span>
-        <p>${data.mas_visitada.nombre || '—'}</p>
+        <p>${esc(data.mas_visitada.nombre || '—')}</p>
       </div>
       <div class="resumen-card destacado">
-        <strong>${data.cat_mas_apis.icono} ${data.cat_mas_apis.nombre}</strong>
+        <strong>${esc(data.cat_mas_apis.icono)} ${esc(data.cat_mas_apis.nombre)}</strong>
         <span>Categoría con más APIs</span>
         <p>${data.cat_mas_apis.total} APIs</p>
       </div>
@@ -42,8 +42,8 @@ async function cargarStats() {
   document.getElementById('top-valoradas').innerHTML = data.top_valoradas.map((a, i) => `
     <div class="stats-row" onclick="location.href='/api/${a.id}/'">
       <span class="stats-pos">${i + 1}</span>
-      <span class="stats-nombre">${a.nombre}</span>
-      <span class="stats-valor">★ ${a.media}</span>
+      <span class="stats-nombre">${esc(a.nombre)}</span>
+      <span class="stats-valor">★ ${esc(a.media)}</span>
     </div>
   `).join('');
 
@@ -53,8 +53,8 @@ async function cargarStats() {
   document.getElementById('top-visitadas').innerHTML = data.top_visitadas.map((a, i) => `
     <div class="stats-row" onclick="location.href='/api/${a.id}/'">
       <span class="stats-pos">${i + 1}</span>
-      <span class="stats-nombre">${a.nombre}</span>
-      <span class="stats-valor">👁 ${a.visitas}</span>
+      <span class="stats-nombre">${esc(a.nombre)}</span>
+      <span class="stats-valor">👁 ${esc(a.visitas)}</span>
     </div>
   `).join('');
 

@@ -1,8 +1,12 @@
 #models.py
 
 import secrets
+from datetime import timedelta
+
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 from apis.models import Api
 
 
@@ -11,12 +15,23 @@ class PerfilUsuario(models.Model):
     usuario            = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
     verificado         = models.BooleanField(default=False)
     token_verificacion = models.CharField(max_length=64, default='', editable=False)
+    # Momento en que se generó el token, para que el enlace de verificación caduque
+    token_creado       = models.DateTimeField(default=timezone.now, editable=False)
 
     def save(self, *args, **kwargs):
-        # Genera un token de verificación único si no existe, utilizando el módulo secrets para mayor seguridad.
-        if not self.token_verificacion:
-            self.token_verificacion = secrets.token_hex(32)
+        # Al crear el perfil se genera el token con el módulo secrets (aleatorio y seguro).
+        # Solo al crearlo: después de verificar, el token se borra para que el enlace no pueda reutilizarse.
+        if self._state.adding and not self.token_verificacion:
+            self.nuevo_token()
         super().save(*args, **kwargs)
+
+    def nuevo_token(self):
+        # Genera un token nuevo y reinicia su fecha (se usa al registrarse y al reenviar un enlace caducado)
+        self.token_verificacion = secrets.token_hex(32)
+        self.token_creado       = timezone.now()
+
+    def token_caducado(self):
+        return timezone.now() > self.token_creado + timedelta(hours=settings.VERIFICACION_HORAS)
 
     def __str__(self):
         # Representación legible del perfil, mostrando el nombre de usuario y un emoji que indica si está verificado o no.

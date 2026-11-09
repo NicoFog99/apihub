@@ -134,6 +134,24 @@ async function logoutUser() {
   });
   location.href = '/';
 }
+// ── Seguridad: escapar datos antes de meterlos en HTML ─────────
+// Convierte los caracteres especiales de HTML en texto inofensivo para evitar XSS
+// cuando se pintan datos que vienen de la base de datos, del usuario o de APIs externas.
+function esc(valor) {
+  return String(valor ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+// Solo deja pasar enlaces http(s); bloquea cosas como "javascript:alert(1)".
+function safeUrl(url) {
+  try {
+    const u = new URL(url, location.origin);
+    return (u.protocol === 'http:' || u.protocol === 'https:') ? esc(u.href) : '#';
+  } catch {
+    return '#';
+  }
+}
+
 // ── Toast notifications ───────────────────────────────────────
 // Función para mostrar notificaciones tipo toast en la esquina superior derecha de la pantalla. Se pueden especificar el mensaje, el tipo (success, error, info) y la duración en milisegundos. El toast se elimina automáticamente después de la duración especificada.
 function showToast(mensaje, tipo = 'success', duracion = 3000) {
@@ -145,7 +163,7 @@ function showToast(mensaje, tipo = 'success', duracion = 3000) {
   toast.className = `toast ${tipo}`;
   toast.innerHTML = `
     <span class="toast-icon">${iconos[tipo] || '✅'}</span>
-    <span class="toast-msg">${mensaje}</span>
+    <span class="toast-msg">${esc(mensaje)}</span>
   `;
 
   container.appendChild(toast);
@@ -175,14 +193,14 @@ async function checkSession() {
       nav.innerHTML = `
         <div class="nav-perfil" id="nav-perfil">
           <div class="nav-avatar" onclick="toggleDropdown()" id="nav-avatar-btn">
-            <span class="avatar-inicial">${user.username[0].toUpperCase()}</span>
+            <span class="avatar-inicial">${esc(user.username[0].toUpperCase())}</span>
           </div>
           <div class="nav-dropdown" id="nav-dropdown">
             <div class="dropdown-header">
-              <div class="dropdown-avatar">${user.username[0].toUpperCase()}</div>
+              <div class="dropdown-avatar">${esc(user.username[0].toUpperCase())}</div>
               <div class="dropdown-info">
-                <strong>${user.username}</strong>
-                <span>${user.email || 'Sin email'}</span>
+                <strong>${esc(user.username)}</strong>
+                <span>${esc(user.email || 'Sin email')}</span>
               </div>
             </div>
             <div class="dropdown-stats">

@@ -24,10 +24,10 @@ async function cargarPerfil() {
 
   document.getElementById('info-usuario').innerHTML = `
     <div class="perfil-hero">
-      <div class="perfil-avatar">${user.username[0].toUpperCase()}</div>
+      <div class="perfil-avatar">${esc(user.username[0].toUpperCase())}</div>
       <div class="perfil-info">
-        <h2>${user.username}</h2>
-        <p>${user.email || 'Sin email'}</p>
+        <h2>${esc(user.username)}</h2>
+        <p>${esc(user.email || 'Sin email')}</p>
       </div>
       <div class="perfil-stats">
         <div class="perfil-stat"><strong>${favs.length}</strong><span>Favoritos</span></div>
@@ -51,12 +51,12 @@ function renderFavoritos(favs) {
     return;
   }
   container.innerHTML = favs.map(f => `
-    <div class="card" onclick="location.href='/api/${f.api}/'">
-      <span class="badge badge-default">${f.api_detalle.categoria_icono || ''} ${f.api_detalle.categoria_nombre || ''}</span>
-      <h3>${f.api_detalle.nombre}</h3>
-      <p>${f.api_detalle.descripcion.slice(0, 95)}…</p>
+    <div class="card" onclick="location.href='/api/${Number(f.api)}/'">
+      <span class="badge badge-default">${esc(f.api_detalle.categoria_icono)} ${esc(f.api_detalle.categoria_nombre)}</span>
+      <h3>${esc(f.api_detalle.nombre)}</h3>
+      <p>${esc(f.api_detalle.descripcion.slice(0, 95))}…</p>
       <div class="card-footer">
-        <button class="btn-quitar-fav" onclick="quitarFavorito(event, ${f.api})">🗑 Quitar</button>
+        <button class="btn-quitar-fav" onclick="quitarFavorito(event, ${Number(f.api)})">🗑 Quitar</button>
       </div>
     </div>
   `).join('');
@@ -106,14 +106,14 @@ function renderHistorial() {
   contenedor.innerHTML = historial.map(h => `
     <div class="historial-item">
       <div class="historial-meta">
-        <span class="historial-api">${h.apiNombre}</span>
-        <span class="historial-fecha">${h.fecha}</span>
+        <span class="historial-api">${esc(h.apiNombre)}</span>
+        <span class="historial-fecha">${esc(h.fecha)}</span>
       </div>
-      <div class="historial-url">${h.url}</div>
+      <div class="historial-url">${esc(h.url)}</div>
       ${Object.keys(h.params).length
-        ? `<div class="historial-params">${Object.entries(h.params).map(([k,v]) => `<span>${k}: <strong>${v}</strong></span>`).join(' · ')}</div>`
+        ? `<div class="historial-params">${Object.entries(h.params).map(([k,v]) => `<span>${esc(k)}: <strong>${esc(v)}</strong></span>`).join(' · ')}</div>`
         : ''}
-      <pre class="historial-respuesta">${h.respuesta}${h.respuesta.length >= 500 ? '…' : ''}</pre>
+      <pre class="historial-respuesta">${esc(h.respuesta)}${h.respuesta.length >= 500 ? '…' : ''}</pre>
     </div>
   `).join('');
 }

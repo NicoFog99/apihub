@@ -28,7 +28,7 @@ async function cargarCategorias() {
   const sel  = document.getElementById('filtro-categoria');
   document.getElementById('stat-cats').textContent = lista.length;
   lista.forEach(c => {
-    sel.innerHTML += `<option value="${c.id}">${c.icono} ${c.nombre}</option>`;
+    sel.innerHTML += `<option value="${esc(c.id)}">${esc(c.icono)} ${esc(c.nombre)}</option>`;
   });
 }
 
@@ -115,20 +115,20 @@ function renderApis(apis) {
     const authText  = api.auth_tipo === 'none'   ? '🔓 Libre'
                     : api.auth_tipo === 'apikey'  ? '🔑 API Key' : '🔐 OAuth';
     const estrellas = api.valoracion_media
-      ? `<span class="card-rating">★ ${api.valoracion_media}</span>`
+      ? `<span class="card-rating">★ ${esc(api.valoracion_media)}</span>`
       : '';
     const visitas = api.total_visitas
-      ? `<span class="card-visitas">👁 ${api.total_visitas}</span>`
+      ? `<span class="card-visitas">👁 ${esc(api.total_visitas)}</span>`
       : '';
     const implementada = api.implementada
       ? `<span class="badge-implementada">✓ Implementada</span>`
       : `<span class="badge-desarrollo">⚙ En desarrollo</span>`; 
     return `
-      <div class="card ${vistaActual === 'list' ? 'card-list' : ''}" style="animation-delay:${i * 0.04}s" onclick="location.href='/api/${api.id}/'">
-        <span class="badge ${badgeClass(api.categoria_nombre)}">${api.categoria_icono || ''} ${api.categoria_nombre || 'General'}</span>
+      <div class="card ${vistaActual === 'list' ? 'card-list' : ''}" style="animation-delay:${i * 0.04}s" onclick="location.href='/api/${Number(api.id)}/'">
+        <span class="badge ${badgeClass(api.categoria_nombre)}">${esc(api.categoria_icono)} ${esc(api.categoria_nombre || 'General')}</span>
         ${implementada}
-        <h3>${api.nombre}</h3>
-        <p>${api.descripcion.slice(0, 95)}${api.descripcion.length > 95 ? '…' : ''}</p>
+        <h3>${esc(api.nombre)}</h3>
+        <p>${esc(api.descripcion.slice(0, 95))}${api.descripcion.length > 95 ? '…' : ''}</p>
         <div class="card-footer">
           <span class="auth-tag ${authClass}">${authText}</span>
           ${estrellas}
