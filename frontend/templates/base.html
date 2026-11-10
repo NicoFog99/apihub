@@ -43,6 +43,7 @@
     </p>
   </footer>
   <div id="toast-container"></div>
+  {{ demo_config|json_script:"demo-config" }}
   <script src="{% static 'js/auth.js' %}"></script>
   {% block scripts %}{% endblock %}
 </body>

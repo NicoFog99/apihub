@@ -543,3 +543,15 @@
   height: 16px;
   cursor: pointer;
 }
+
+
+/* Recuadro con los datos de la cuenta demo en el modal de login */
+.demo-aviso {
+  border: 1px dashed #6366f1;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+.demo-aviso p { margin: 0 0 0.5rem; }
+.demo-aviso button { margin-top: 0.25rem; }

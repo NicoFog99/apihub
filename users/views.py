@@ -15,9 +15,19 @@ from .models import Favorito, PerfilUsuario, Valoracion
 from .serializers import RegisterSerializer, FavoritoSerializer
 from apis.models import Api
 
+
+# Mensaje y comprobación para proteger la cuenta demo compartida
+MENSAJE_DEMO = 'No tienes permiso para hacer eso con la cuenta demo.'
+
+def es_cuenta_demo(user):
+    # Solo en modo demo: la cuenta compartida no se puede modificar ni borrar
+    return settings.MODO_DEMO and user.username == settings.DEMO_USUARIO
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
+    if settings.MODO_DEMO:
+        return Response({'error': 'El registro está desactivado en la demo. Usa la cuenta demo para entrar.'}, status=403)
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
@@ -153,6 +163,8 @@ def mi_valoracion(request, api_id):
 # Vista para manejar el cambio de contraseña del usuario autenticado, 
 # verificando la contraseña actual y validando la nueva contraseña antes de actualizarla.
 def cambiar_password(request):
+    if es_cuenta_demo(request.user):
+        return Response({'error': MENSAJE_DEMO}, status=403)
     password_actual = request.data.get('password_actual')
     password_nuevo  = request.data.get('password_nuevo')
     if not request.user.check_password(password_actual):
@@ -171,6 +183,8 @@ def cambiar_password(request):
 # Vista para manejar el cambio de email del usuario autenticado, 
 # validando el nuevo email y asegurándose de que no esté en uso por otro usuario antes de actualizarlo.
 def cambiar_email(request):
+    if es_cuenta_demo(request.user):
+        return Response({'error': MENSAJE_DEMO}, status=403)
     email = (request.data.get('email') or '').strip()
     try:
         validate_email(email)
@@ -186,6 +200,8 @@ def cambiar_email(request):
 @permission_classes([IsAuthenticated])
 # Vista para manejar el cambio de nombre de usuario del usuario autenticado,
 def cambiar_username(request):
+    if es_cuenta_demo(request.user):
+        return Response({'error': MENSAJE_DEMO}, status=403)
     username = (request.data.get('username') or '').strip()
     if not username:
         return Response({'error': 'El nombre de usuario no puede estar vacío.'}, status=400)
@@ -207,6 +223,8 @@ def cambiar_username(request):
 # Vista para manejar la eliminación de la cuenta del usuario autenticado, 
 # verificando la contraseña antes de proceder con la eliminación.
 def eliminar_cuenta(request):
+    if es_cuenta_demo(request.user):
+        return Response({'error': MENSAJE_DEMO}, status=403)
     password = request.data.get('password')
     if not request.user.check_password(password):
         return Response({'error': 'Contraseña incorrecta.'}, status=400)

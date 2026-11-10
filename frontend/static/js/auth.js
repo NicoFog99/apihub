@@ -1,6 +1,9 @@
 //auth.js
 const API = '/api/users';
 
+// Configuración del modo demo que manda Django con json_script (si no existe, modo normal)
+const DEMO = JSON.parse(document.getElementById('demo-config')?.textContent || '{"activo": false}');
+
 // ── Modal HTML ────────────────────────────────────────────────────────
 function crearModal() {
   if (document.getElementById('auth-modal')) return;
@@ -49,6 +52,29 @@ function crearModal() {
       </div>
     </div>
   `);
+  if (DEMO.activo) prepararModalDemo();
+}
+
+// En modo demo: sin pestaña de registro y con un recuadro con los datos de la cuenta demo
+function prepararModalDemo() {
+  document.getElementById('tab-btns').remove();
+  document.getElementById('form-register').remove();
+  const aviso = document.createElement('div');
+  aviso.className = 'demo-aviso';
+  aviso.innerHTML = `
+    <p><strong>Versión demo.</strong> El registro está desactivado; entra con la cuenta compartida:</p>
+    <p>Usuario: <code></code> · Contraseña: <code></code></p>
+    <button type="button" class="btn-primary">Entrar con la cuenta demo</button>`;
+  // Los datos se ponen con textContent, no dentro del HTML, para no abrir la puerta a XSS
+  const codes = aviso.querySelectorAll('code');
+  codes[0].textContent = DEMO.usuario;
+  codes[1].textContent = DEMO.password;
+  aviso.querySelector('button').addEventListener('click', () => {
+    document.getElementById('login-user').value = DEMO.usuario;
+    document.getElementById('login-pass').value = DEMO.password;
+    hacerLogin();
+  });
+  document.getElementById('form-login').prepend(aviso);
 }
 
 //Función para mostrar el tab de login o registro según el botón que se haya pulsado, y actualizar las clases para resaltar el tab activo

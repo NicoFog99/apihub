@@ -7,7 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Configuración de archivos estáticos para producción con WhiteNoise
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 
 # Configuración de seguridad y entorno
 SECRET_KEY = config('SECRET_KEY')
@@ -58,6 +61,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'frontend.context_processors.modo_demo',
             ],
         },
     },
@@ -122,6 +126,12 @@ CORS_ALLOWED_ORIGINS = [o.strip() for o in config('CORS_ALLOWED_ORIGINS', defaul
 
 # Caducidad del enlace de verificación de email (en horas)
 VERIFICACION_HORAS = config('VERIFICACION_HORAS', default=24, cast=int)
+
+# Modo demo (versión pública del portfolio): todos usan una cuenta compartida,
+# así que se bloquean el registro y los cambios en la cuenta para que nadie la estropee.
+MODO_DEMO = config('MODO_DEMO', default=False, cast=bool)
+DEMO_USUARIO = config('DEMO_USUARIO', default='demo')
+DEMO_PASSWORD = config('DEMO_PASSWORD', default='')
 
 # Email — en desarrollo sale por terminal
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
