@@ -143,3 +143,7 @@ EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.conso
 # Fuerza HTTPS en las URLs generadas por DRF para railway (paginación, etc.)
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Al pedir recursos a otros sitios (como los mapas de OpenStreetMap), el navegador envía solo el dominio
+# de la web en la cabecera Referer. Django por defecto no la envía, y OpenStreetMap bloquea esas peticiones.
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'

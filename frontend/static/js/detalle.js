@@ -149,6 +149,10 @@ if (safeModeCheck) {
     // Si el servidor rechaza la petición (URL fuera del catálogo, API caída, etc.), se muestra el error en rojo
     if (!res.ok) throw new Error(envelope.error || envelope.detail || `Error ${res.status}`);
     const data     = envelope.data || envelope;
+    // El proxy responde 200 aunque la API externa falle: su código real viene en envelope.status
+    if (envelope.status >= 400) {
+      throw new Error(`La API externa respondió ${envelope.status}: ${mensajeDeError(data)}`);
+    }
 
     pre.textContent = JSON.stringify(data, null, 2);
     pre.style.color = '#4ade80';
@@ -163,6 +167,7 @@ if (safeModeCheck) {
     if (renderTipo !== 'json') renderVisual(renderTipo, data);
 
   } catch(e) {
+    document.getElementById('seccion-visual').style.display = 'none';
     pre.textContent = `Error: ${e.message}`;
     pre.style.color = '#f87171';
     document.getElementById('pre-wrapper').style.display = 'block';
@@ -171,6 +176,14 @@ if (safeModeCheck) {
     btn.innerHTML = '&#9654; Enviar petición';
   }
 });
+
+// Saca un mensaje legible de la respuesta de error de una API externa (cada una usa un formato distinto)
+function mensajeDeError(data) {
+  if (!data || typeof data !== 'object') return 'sin detalles';
+  const msg = data.reason || data.msg || data.message || data.Err?.message
+           || (typeof data.error === 'string' ? data.error : data.error?.message);
+  return msg || 'sin detalles';
+}
 
 // ── Renderizado visual ────────────────────────────────────────
 function renderVisual(tipo, data) {
