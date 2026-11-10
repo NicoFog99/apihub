@@ -18,6 +18,10 @@ SECRET_KEY = config('SECRET_KEY')
 # En producción, DEBUG debe ser False y ALLOWED_HOSTS debe contener los dominios permitidos
 DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
+# En Render, el dominio del servicio llega solo en esta variable, así no hay que escribirlo a mano
+RENDER_EXTERNAL_HOSTNAME = config('RENDER_EXTERNAL_HOSTNAME', default='')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Aplicaciones instaladas, middleware, configuración de base de datos, autenticación, internacionalización, etc. se definen a continuación
 INSTALLED_APPS = [
